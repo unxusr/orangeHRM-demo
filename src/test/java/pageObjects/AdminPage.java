@@ -6,8 +6,10 @@ import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;  
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.interactions.Actions;
+import com.github.javafaker.Faker;
 
 
 import java.time.Duration;
@@ -16,12 +18,13 @@ public class AdminPage {
 
     private WebDriver driver;
     private WebDriverWait wait;
-    String username;
-    String foundRecords;
-    int records;
-    String employeeName;
-    String firstName;
-    String numberPart;
+    private String username;
+    private String foundRecords;
+    private int records;
+    private Faker faker = new Faker();
+    private String firstName = faker.name().firstName();
+    private String password = "Admin123";
+    private String numberPart;
 
     // Locators 
     @FindBy(xpath = "//*[@href='/web/index.php/admin/viewAdminModule']")
@@ -60,8 +63,11 @@ public class AdminPage {
     @FindBy(xpath = "//*[contains(text(), 'Admin')]")
     private WebElement adminRole;
 
-    @FindBy(xpath = "//*[@placeholder=\"Type for hints...\"]") 
+    @FindBy(xpath = "//*[@placeholder='Type for hints...']") 
     private WebElement empNameField;
+
+    @FindBy(xpath = "//div[@role='listbox']//div[@role='option'][1]")
+    private WebElement firstEmpNameInTheList;
 
     @FindBy(xpath = "//input[@class='oxd-input oxd-input--active' and @autocomplete='off']") 
     private WebElement usernameField;
@@ -71,6 +77,12 @@ public class AdminPage {
 
     @FindBy(xpath = "//div[@class='oxd-select-dropdown --positon-bottom']//div[2]") 
     private WebElement status;
+
+    @FindBy(xpath = "//label[text()='Password']/following::input[1]")
+    private WebElement passwordField;
+
+    @FindBy(xpath = "//label[text()='Password']/following::input[2]")
+    private WebElement confirmPasswordField;
 
     @FindBy(xpath = "//button[@type='submit']")
     private WebElement saveButton;
@@ -97,10 +109,11 @@ public class AdminPage {
         addEmployeeTab.click();
     }
 
-    public void fillInFirstName(String firstName) {
+    public String fillInFirstName(String firstName) {
         wait.until(ExpectedConditions.visibilityOf(firstNameField));
-        firstNameField.sendKeys(firstName);
+        firstNameField.sendKeys(this.firstName);
         System.out.println("First name: " + firstName);
+        return firstName;
     }
 
     public void fillInLastName(String lastName) {
@@ -145,12 +158,18 @@ public class AdminPage {
         wait.until(ExpectedConditions.visibilityOf(userRole));
         userRole.click();
         adminRole.click();
-        Actions actions = new Actions(driver);
-        actions.sendKeys(empNameField, Keys.ARROW_DOWN).perform();
-        actions.sendKeys(empNameField, Keys.ENTER).perform();
-        employeeName = empNameField.getText();
-        //int randomNumber = (int)(Math.random() * 1000 + 1);
-        //username = "emp_" + randomNumber;
+        empNameField.sendKeys(this.firstName + " ");
+        wait.until(ExpectedConditions.visibilityOf(firstEmpNameInTheList));
+        //wait.until(ExpectedConditions.attributeToBeNotEmpty(firstEmpNameInTheList, this.firstName));
+        try {
+            Thread.sleep(2000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        firstEmpNameInTheList.click();
+        // String employeeName = empNameField.getText();
+        int randomNumber = (int)(Math.random() * 1000 + 1);
+        username = "emp_" + randomNumber;
         wait.until(ExpectedConditions.visibilityOf(empNameField));
         usernameField.sendKeys(username);
         statusMenu.click();
@@ -160,6 +179,8 @@ public class AdminPage {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
+        passwordField.sendKeys(password);
+        confirmPasswordField.sendKeys(password);
         return username;
     }
 

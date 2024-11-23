@@ -60,6 +60,32 @@
                     </includes>
                 </configuration>
             </plugin>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>exec-maven-plugin</artifactId>
+                <version>3.0.0</version>
+                <executions>
+                    <execution>
+                        <phase>test</phase>
+                        <goals>
+                            <goal>exec</goal>
+                        </goals>
+                        <configuration>
+                            <executable>open</executable> <!-- For macOS -->
+                            <!-- <executable>xdg-open</executable> For Linux -->
+                            <!-- <executable>cmd</executable> For Windows -->
+                            <!-- <arguments> For Windows -->
+                            <!--     <argument>/c</argument> -->
+                            <!--     <argument>start</argument> -->
+                            <!--     <argument>target/cucumber-reports.html</argument> -->
+                            <!-- </arguments> -->
+                            <arguments>
+                                <argument>target/cucumber-reports.html</argument>
+                            </arguments>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
         </plugins>
     </build>
 </project>

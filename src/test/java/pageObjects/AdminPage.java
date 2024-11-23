@@ -197,11 +197,6 @@ public class AdminPage {
         usernameField.sendKeys(username);
         statusMenu.click();
         status.click();
-        try {
-            Thread.sleep(10000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
         passwordField.sendKeys(password);
         confirmPasswordField.sendKeys(password);
         return username;

@@ -87,6 +87,24 @@ public class AdminPage {
     @FindBy(xpath = "//button[@type='submit']")
     private WebElement saveButton;
 
+    @FindBy(xpath = "//label[text()='Username']/following::input[1]")
+    private WebElement searchByUsernameFieldInput;
+
+    @FindBy(xpath = "//div[@class='oxd-table-body']//div[@role='row'][1]")
+    private WebElement adminResultFirstRow;
+
+    @FindBy(xpath = "//button[i[@data-v-bddebfba and @class='oxd-icon bi-trash']]")
+    private WebElement deleteButton;
+    
+    @FindBy(xpath = "//button[text()=' Yes, Delete ']")
+    private WebElement confirmDeleteButton;
+
+    @FindBy(xpath = "//button[text()=' Search ']")
+    private WebElement searchButton;
+
+    @FindBy(xpath = "//button[text()=' Reset ']")
+    private WebElement resetButton;
+
     // Constructor
     public AdminPage(WebDriver driver) {
         this.driver = driver;
@@ -135,6 +153,11 @@ public class AdminPage {
 
     public void verifyEmployeeProfilePage() {
         wait.until(ExpectedConditions.visibilityOf(employeeNameFieldInProfilePage));
+        // Print the HTML content of the element for debugging
+        //String elementHtml = employeeNameFieldInProfilePage.getAttribute("outerHTML");
+        //System.out.println("Employee name field HTML: " + elementHtml);
+        // Wait until the element contains text
+        wait.until(ExpectedConditions.not(ExpectedConditions.textToBe(By.xpath("//div[@class='orangehrm-edit-employee-name']//h6"), "")));
         String name = employeeNameFieldInProfilePage.getText();
         System.out.println("Employee name: " + name);
     }
@@ -201,20 +224,33 @@ public class AdminPage {
     }
 
     public void searchForUser() {
-        usernameField.sendKeys(username);
+        searchByUsernameFieldInput.sendKeys(username);
+        searchButton.click();
     }
 
     public void verifyUserFound() {
-        
+        wait.until(ExpectedConditions.visibilityOf(adminResultFirstRow));
+        adminResultFirstRow.isDisplayed();
     }
 
     public void deleteUser() {
-        // Delete the user
-        // ...
+        deleteButton.click();
+        wait.until(ExpectedConditions.visibilityOf(confirmDeleteButton));
+        confirmDeleteButton.click();
+        resetButton.click();
     }
 
     public void verifyRecordCountDecreased(int initialCount) {
-        // Verify that the record count has decreased
-        // ...
+        wait.until(ExpectedConditions.visibilityOf(numberOfRecords));
+        
+        // Get the new count of records
+        int newCount = getNumberOfRecords();
+        
+        // Compare the new count with the initial count
+        if (newCount < initialCount) {
+            System.out.println("The record count has decreased.");
+        } else {
+            System.out.println("The record count has not decreased.");
+        }
     }
 }

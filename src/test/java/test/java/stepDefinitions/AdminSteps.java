@@ -15,6 +15,13 @@ public class AdminSteps {
     String firstName;
     String lastName;
 
+    @After
+    public void tearDown() {
+        if (driver != null) {
+            driver.quit();
+        }
+    }
+
     @Given("the user is on the OrangeHRM login page")
     public void openLoginPage() {
         driver = new ChromeDriver();
@@ -123,13 +130,6 @@ public class AdminSteps {
     @Then("the number of records should decrease by {int}")
     public void verifyRecordDecrease(int count) {
         adminPage.verifyRecordCountDecreased(count);
-    }
-
-    @After
-    public void tearDown() {
-        if (driver != null) {
-            driver.quit();
-        }
     }
 }
     

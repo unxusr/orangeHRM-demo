@@ -1,6 +1,7 @@
 package test.java.stepDefinitions;
 
 import io.cucumber.java.en.*;
+import io.cucumber.java.Before;
 import pageObjects.*;
 import com.github.javafaker.Faker;
 import org.openqa.selenium.WebDriver;
@@ -15,19 +16,29 @@ public class AdminSteps {
     String firstName;
     String lastName;
 
+    @Before
+    public void setUp() {
+        driver = new ChromeDriver();
+        adminPage = new AdminPage(driver);
+        loginPage = new LoginPage(driver);
+    }
+
     @After
     public void tearDown() {
         if (driver != null) {
+            try {
+                // Add a short delay before quitting the driver
+                Thread.sleep(2000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
             driver.quit();
         }
     }
 
     @Given("the user is on the OrangeHRM login page")
     public void openLoginPage() {
-        driver = new ChromeDriver();
         driver.get("https://opensource-demo.orangehrmlive.com/");
-        adminPage = new AdminPage(driver);
-        loginPage = new LoginPage(driver);
     }
 
     @When("the user enters {string} as username")

@@ -1,11 +1,11 @@
 package test.java.stepDefinitions;
 
 import io.cucumber.java.en.*;
-import io.cucumber.java.Before;
 import pageObjects.*;
 import com.github.javafaker.Faker;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
+import io.cucumber.java.Before;
 import io.cucumber.java.After;
 public class AdminSteps {
 
@@ -18,6 +18,7 @@ public class AdminSteps {
 
     @Before
     public void setUp() {
+        System.out.println("Setting up WebDriver");
         driver = new ChromeDriver();
         adminPage = new AdminPage(driver);
         loginPage = new LoginPage(driver);
@@ -25,6 +26,7 @@ public class AdminSteps {
 
     @After
     public void tearDown() {
+        System.out.println("Tearing down WebDriver");
         if (driver != null) {
             try {
                 // Add a short delay before quitting the driver
@@ -142,5 +144,7 @@ public class AdminSteps {
     public void verifyRecordDecrease(int count) {
         adminPage.verifyRecordCountDecreased(count);
     }
+
+    
 }
     

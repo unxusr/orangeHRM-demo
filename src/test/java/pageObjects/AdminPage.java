@@ -7,8 +7,6 @@ import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.By;
-import org.openqa.selenium.Keys;
-import org.openqa.selenium.interactions.Actions;
 import com.github.javafaker.Faker;
 
 
@@ -19,7 +17,6 @@ public class AdminPage {
     private WebDriver driver;
     private WebDriverWait wait;
     private String username;
-    private String foundRecords;
     private int records;
     private Faker faker = new Faker();
     private String firstName = faker.name().firstName();
@@ -153,10 +150,6 @@ public class AdminPage {
 
     public void verifyEmployeeProfilePage() {
         wait.until(ExpectedConditions.visibilityOf(employeeNameFieldInProfilePage));
-        // Print the HTML content of the element for debugging
-        //String elementHtml = employeeNameFieldInProfilePage.getAttribute("outerHTML");
-        //System.out.println("Employee name field HTML: " + elementHtml);
-        // Wait until the element contains text
         wait.until(ExpectedConditions.not(ExpectedConditions.textToBe(By.xpath("//div[@class='orangehrm-edit-employee-name']//h6"), "")));
         String name = employeeNameFieldInProfilePage.getText();
         System.out.println("Employee name: " + name);
@@ -183,14 +176,12 @@ public class AdminPage {
         adminRole.click();
         empNameField.sendKeys(this.firstName + " ");
         wait.until(ExpectedConditions.visibilityOf(firstEmpNameInTheList));
-        //wait.until(ExpectedConditions.attributeToBeNotEmpty(firstEmpNameInTheList, this.firstName));
         try {
             Thread.sleep(2000);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
         firstEmpNameInTheList.click();
-        // String employeeName = empNameField.getText();
         int randomNumber = (int)(Math.random() * 1000 + 1);
         username = "emp_" + randomNumber;
         wait.until(ExpectedConditions.visibilityOf(empNameField));

@@ -1,0 +1,4 @@
+test/java/TestRunner.class
+pageObjects/LoginPage.class
+pageObjects/AdminPage.class
+test/java/stepDefinitions/AdminSteps.class

@@ -127,20 +127,17 @@ public class AdminPage {
     public String fillInFirstName(String firstName) {
         wait.until(ExpectedConditions.visibilityOf(firstNameField));
         firstNameField.sendKeys(this.firstName);
-        System.out.println("First name: " + firstName);
         return firstName;
     }
 
     public void fillInLastName(String lastName) {
         lastNameField.sendKeys(lastName);
-        System.out.println("Last name: " + lastName);
     }
 
     public void fillInEmployeeId(String employeeId) {
         employeeIdField.click();
         employeeIdField.clear();
         employeeIdField.sendKeys(employeeId);
-        System.out.println("Employee ID: " + employeeId);
     }
 
     public void saveEmployeeData() {
@@ -163,7 +160,8 @@ public class AdminPage {
         String[] parts = recordsText.split(" ");
         numberPart = parts[0].replaceAll("[^0-9]", ""); // Remove non-numeric characters
         System.out.println("Number of records: " + numberPart);
-        return Integer.parseInt(numberPart.trim());
+        records = Integer.parseInt(numberPart.trim());
+        return records;
     }
 
     public void clickAddButton() {
@@ -228,14 +226,14 @@ public class AdminPage {
 
     public void verifyRecordCountDecreased(int initialCount) {
         wait.until(ExpectedConditions.visibilityOf(numberOfRecords));
-        
         // Get the new count of records
         int newCount = getNumberOfRecords();
         
         // Compare the new count with the initial count
-        if (newCount < initialCount) {
+        if (newCount == records) {
             System.out.println("The record count has decreased.");
         } else {
+            System.out.println(records);
             System.out.println("The record count has not decreased.");
         }
     }

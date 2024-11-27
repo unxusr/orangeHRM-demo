@@ -7,6 +7,9 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import io.cucumber.java.Before;
 import io.cucumber.java.After;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
+
 public class AdminSteps {
 
     private WebDriver driver;
@@ -103,11 +106,14 @@ public class AdminSteps {
     @Then("the user should see the number of records found")
     public void getNumberOfRecords() {
         adminPage.getNumberOfRecords();
+        String recordsText = adminPage.getNumberOfRecordsText();
+        assertTrue("Number of records not found", recordsText.contains("Records Found"));
     }
 
     @When("the user clicks on the Add button")
     public void clickAddButton() {
         adminPage.clickAddButton();
+        assertTrue("Add user form is displayed", adminPage.verifyAddUserFormIsDisplayed());
     }
 
     @And("the user fills the required data")
@@ -122,7 +128,7 @@ public class AdminSteps {
 
     @Then("the number of records should increase by one")
     public void verifyRecordIncrease() {
-        adminPage.verifyRecordCountIncreased();
+        assertTrue("Records has increased", adminPage.verifyRecordCountIncreased());
     }
 
     @When("the user searches for the new user by username")
@@ -132,7 +138,7 @@ public class AdminSteps {
 
     @Then("the user should see the new user in the search results")
     public void verifyUserFound() {
-        adminPage.verifyUserFound();
+        assertTrue("New user found in search results", adminPage.verifyUserFound());
     }
 
     @When("the user deletes the new user")
@@ -142,7 +148,7 @@ public class AdminSteps {
 
     @Then("the number of records should decrease by {int}")
     public void verifyRecordDecrease(int count) {
-        adminPage.verifyRecordCountDecreased(count);
+        assertTrue("Records has decreased", adminPage.verifyRecordCountDecreased(count));
     }
 
     

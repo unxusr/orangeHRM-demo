@@ -42,6 +42,9 @@ public class AdminPage {
     @FindBy(xpath = "//*[@name='lastName']")
     private WebElement lastNameField;
 
+    @FindBy(xpath = "//h6[text()='Add User']")
+    private WebElement addUserFormTitle;
+
     @FindBy(xpath = "//label[text()='Employee Id']/following::input[1]")
     private WebElement employeeIdField;
 
@@ -114,6 +117,12 @@ public class AdminPage {
         adminTab.click();
     }
 
+    public boolean verifyAddUserFormIsDisplayed() {
+        wait.until(ExpectedConditions.visibilityOf(saveButton));
+        return addUserFormTitle.isDisplayed();
+        
+    }
+
     public void clickPimTab() {
         wait.until(ExpectedConditions.elementToBeClickable(pimTab));
         pimTab.click();
@@ -152,6 +161,11 @@ public class AdminPage {
         System.out.println("Employee name: " + name);
     }
 
+    public String getNumberOfRecordsText() {
+        wait.until(ExpectedConditions.visibilityOf(numberOfRecords));
+        String recordsInText = numberOfRecords.getText();
+        return recordsInText;
+    }
     public int getNumberOfRecords() {
         wait.until(ExpectedConditions.visibilityOf(numberOfRecords));
         String recordsText = numberOfRecords.getText();
@@ -212,9 +226,15 @@ public class AdminPage {
         searchButton.click();
     }
 
-    public void verifyUserFound() {
+    public boolean verifyUserFound() {
         wait.until(ExpectedConditions.visibilityOf(adminResultFirstRow));
-        adminResultFirstRow.isDisplayed();
+        if (adminResultFirstRow.isDisplayed()){
+            System.out.println("The user was found in the search results.");
+            return true;
+        } else {
+            System.out.println("The user was not found in the search results.");
+            return false;
+        }
     }
 
     public void deleteUser() {
@@ -224,7 +244,7 @@ public class AdminPage {
         resetButton.click();
     }
 
-    public void verifyRecordCountDecreased(int initialCount) {
+    public boolean verifyRecordCountDecreased(int initialCount) {
         wait.until(ExpectedConditions.visibilityOf(numberOfRecords));
         // Get the new count of records
         int newCount = getNumberOfRecords();
@@ -232,9 +252,11 @@ public class AdminPage {
         // Compare the new count with the initial count
         if (newCount == records) {
             System.out.println("The record count has decreased.");
+            return true;
         } else {
             System.out.println(records);
             System.out.println("The record count has not decreased.");
+            return false;
         }
     }
 }

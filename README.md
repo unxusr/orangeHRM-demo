@@ -29,20 +29,24 @@ This project is a web automation testing framework for the OrangeHRM application
 - Java 11 or higher
 - Maven
 - ChromeDriver (compatible with your Chrome version)
-
 ### Setup
 #### Clone the repository:
+```
 git clone https://github.com/unxusr/orangeHRM-demo.git
 cd web
+```
 
+### Install dependencies:
 
-#### Install dependencies:
-
+#### install
+`mvn clean install`
 
 Update the chromedriver path in your system's PATH environment variable.
 
 ### Running Tests
 To execute the tests, run the following command:
+
+`mvn test`
 
 
 ### Project Components
